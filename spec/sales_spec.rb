@@ -14,7 +14,7 @@ describe 'The Container Store Sales' do
 
   # Initialize the driver with the target browser
   before(:all) do
-    @driver = Selenium::WebDriver.for(:chrome)
+    @driver = Selenium::WebDriver.for(:firefox)
     @driver.manage.timeouts.implicit_wait = 30
   end
 
