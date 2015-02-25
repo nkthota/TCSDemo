@@ -11,6 +11,7 @@ class ProductDetails < AbstractPage
     @table_sellableitems = "table[class='sellableItems gutter-bottom-double']"
   end
 
+  # verify the items page is displayed with price
   def findproductsellableitem(itemnumber)
     itemflag = false
     itemprice = ""

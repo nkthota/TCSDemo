@@ -12,12 +12,6 @@ class SpecialSavings < AbstractPage
     @select_items = "[name='rpp']"
   end
 
-  def navigatetosalespage()
-    @@driver.navigate.to 'http://www.containerstore.com/shop/specialSavings'
-    wait = Selenium::WebDriver::Wait.new(:timeout => 100)
-    wait.until { @@driver.title.downcase.start_with? "special savings" }
-  end
-
   # verify all sale item price to make sure the sale price is < actual price
   def verifyitemsprice()
     begin

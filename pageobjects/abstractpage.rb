@@ -6,6 +6,7 @@ class AbstractPage
 
   @@driver = nil
   @@gblErrorCode = ''
+  @@gblTimeout = 60
 
   # Initialize the abstract class with any global variables
   def initialize (driver)
@@ -14,18 +15,16 @@ class AbstractPage
   end
 
   # Navigate to a given page url
-
   def navigatetopage(url , title)
     @@driver.navigate.to url
-    wait = Selenium::WebDriver::Wait.new(:timeout => 60)
+    wait = Selenium::WebDriver::Wait.new(:timeout => @@gblTimeout)
     wait.until { @@driver.title.downcase.start_with? title }
   end
 
   # Edit control set value base on the CSS selector
-
   def setValue(css_selector , value)
     @@gblErrorCode = ''
-    wait = Selenium::WebDriver::Wait.new(:timeout => 30) # seconds
+    wait = Selenium::WebDriver::Wait.new(:timeout => @@gblTimeout) # seconds
     begin
       element = wait.until { @@driver.find_element(:css , css_selector) }
       element.send_keys value
@@ -37,10 +36,9 @@ class AbstractPage
   end
 
   # Select control select value base on the CSS selector
-
   def selectValue(css_selector , value)
     @@gblErrorCode = ''
-    wait = Selenium::WebDriver::Wait.new(:timeout => 30) # seconds
+    wait = Selenium::WebDriver::Wait.new(:timeout => @@gblTimeout) # seconds
     begin
       option = wait.until {Selenium::WebDriver::Support::Select.new(@@driver.find_element(:css , css_selector))}
       option.select_by(:text, value)
@@ -53,10 +51,9 @@ class AbstractPage
   end
 
   # CLick on element specified by CSS selector
-
   def click(css_selector)
     @@gblErrorCode = ''
-    wait = Selenium::WebDriver::Wait.new(:timeout => 30) # seconds
+    wait = Selenium::WebDriver::Wait.new(:timeout => @@gblTimeout) # seconds
     begin
       element = wait.until { @@driver.find_element(:css , css_selector) }
       element.click()
@@ -74,30 +71,17 @@ class AbstractPage
   end
 
   # Browser navigation sync
-  def browserSync(timeout=30)
+  def browserSync(timeout=60)
     begin
       wait = Selenium::WebDriver::Wait.new(:timeout => timeout)
       wait.until {
         @@driver.execute_script("return document.readyState;") == "complete"
+        sleep(2)
       }
     rescue Exception => e
       puts e.message
       @@gblErrorCode = e.message
     end
-  end
-
-  # Handle promotion and email sign up popup control
-  def closePromotionPopUp()
-    @@gblErrorCode = ''
-    wait = Selenium::WebDriver::Wait.new(:timeout => 30) # seconds
-    begin
-      @@driver.execute_script("if(document.getElementsByTagName('area')[1] != null){if(document.getElementsByTagName('area')[1].href.indexOf('#close') != -1){document.getElementsByTagName('area')[1].click();}}")
-      browserSync()
-    rescue Exception => e
-      puts e.message
-      @@gblErrorCode = e.message
-    end
-    return @@gblErrorCode
   end
 
 end

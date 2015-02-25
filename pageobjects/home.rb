@@ -15,7 +15,20 @@ class HomePage < AbstractPage
 
   # the object name and the initialization will come from the chrome extension to save time
 
-  # extend the methods from the
+  # Handle promotion and email sign up popup control
+  def closePromotionPopUp()
+    @@gblErrorCode = ''
+    wait = Selenium::WebDriver::Wait.new(:timeout => @@gblTimeout) # seconds
+    begin
+      @@driver.execute_script("if(document.getElementsByTagName('area')[1] != null){if(document.getElementsByTagName('area')[1].href.indexOf('#close') != -1){document.getElementsByTagName('area')[1].click();}}")
+      browserSync()
+      sleep(5)
+    rescue Exception => e
+      puts e.message
+      @@gblErrorCode = e.message
+    end
+    return @@gblErrorCode
+  end
 
 
 end
